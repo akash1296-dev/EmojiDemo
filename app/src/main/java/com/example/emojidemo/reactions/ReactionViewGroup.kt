@@ -225,23 +225,6 @@ class ReactionViewGroup(
         currentState = ReactionViewState.Boundary.Appear(path = dialogHeight to 0)
     }
 
-    fun show(parent: View) {
-        this.firstClick = Point(parent.x.roundToInt(), parent.y.roundToInt())
-        this.parentLocation = IntArray(2)
-            .also(parent::getLocationOnScreen)
-            .let { Point(it[0], it[1]) }
-        parentSize = Size(parent.width, parent.height)
-        isFirstTouchAlwaysInsideButton = true
-        isIgnoringFirstReaction = true
-
-        // Resize, could be fixed with later resolved width/height
-        onSizeChanged(width, height, width, height)
-
-        // Appear effect
-        visibility = View.VISIBLE
-        currentState = ReactionViewState.Boundary.Appear(path = dialogHeight to 0)
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         isFirstTouchAlwaysInsideButton = isFirstTouchAlwaysInsideButton && inInsideParentView(event)

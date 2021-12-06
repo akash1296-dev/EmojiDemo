@@ -19,7 +19,7 @@ class ReactionPopup @JvmOverloads constructor(
     reactionsConfig: ReactionsConfig,
     var reactionSelectedListener: ReactionSelectedListener? = null,
     var reactionPopupStateChangeListener: ReactionPopupStateChangeListener? = null
-) : PopupWindow(context), View.OnTouchListener, View.OnLongClickListener {
+) : PopupWindow(context), View.OnTouchListener {
 
     private val rootView = FrameLayout(context).also {
         it.layoutParams = ViewGroup.LayoutParams(
@@ -58,27 +58,29 @@ class ReactionPopup @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View, event: MotionEvent): Boolean {
-        if (!isShowing) {
-            // Show fullscreen with button as context provider
-            showAtLocation(v, Gravity.NO_GRAVITY, 0, 0)
-            view.show(event, v)
-            reactionPopupStateChangeListener?.invoke(true)
+        when (event.action) {
+            MotionEvent.ACTION_MOVE -> {
+                if (!isShowing) {
+                    // Show fullscreen with button as context provider
+                    showAtLocation(v, Gravity.NO_GRAVITY, 0, 0)
+                    view.show(event, v)
+                    reactionPopupStateChangeListener?.invoke(true)
+                }
+                return view.onTouchEvent(event)
+            }
+
+            MotionEvent.ACTION_UP -> {
+                return view.onTouchEvent(event)
+            }
+
+            else -> {
+                return view.onTouchEvent(event)
+            }
         }
-        return view.onTouchEvent(event)
     }
 
     override fun dismiss() {
         view.dismiss()
         super.dismiss()
-    }
-
-    override fun onLongClick(v: View?): Boolean {
-        if (!isShowing) {
-            // Show fullscreen with button as context provider
-            showAtLocation(v, Gravity.NO_GRAVITY, 0, 0)
-            view.show(v!!)
-            reactionPopupStateChangeListener?.invoke(true)
-        }
-        return false
     }
 }

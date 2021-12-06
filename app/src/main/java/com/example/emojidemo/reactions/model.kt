@@ -35,6 +35,7 @@ typealias ReactionPopupStateChangeListener = (isShowing: Boolean) -> Unit
 
 data class Reaction(
     val image: Drawable,
+    val reactionName: String,
     val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_CENTER
 )
 
@@ -90,11 +91,11 @@ class ReactionsConfigBuilder(val context: Context) {
     var reactions: Collection<Reaction> = emptyList()
 
     // reactions = listOf(R.drawable.img1, R.drawable.img2, ...)
-    var reactionsIds: IntArray
+    /*var reactionsIds: IntArray
         get() = throw NotImplementedError()
         set(value) {
             withReactions(value)
-        }
+        }*/
 
     @Px
     var reactionSize: Int =
@@ -148,9 +149,10 @@ class ReactionsConfigBuilder(val context: Context) {
     @JvmOverloads
     fun withReactions(
         res: IntArray,
+        reactionName: String,
         scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_CENTER
     ) = withReactions(res.map {
-        Reaction(ContextCompat.getDrawable(context, it)!!, scaleType)
+        Reaction(ContextCompat.getDrawable(context, it)!!, reactionName, scaleType)
     })
 
     fun withReactionTexts(reactionTextProvider: ReactionTextProvider) = this.also {
