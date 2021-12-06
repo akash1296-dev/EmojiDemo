@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -123,6 +124,8 @@ class ReactionViewGroup(
     private var isIgnoringFirstReaction: Boolean = false
 
     var reactionSelectedListener: ReactionSelectedListener? = null
+
+    var selectedReaction: OnReactionSelectedListener? = null
 
     var reactionPopupStateChangeListener: ReactionPopupStateChangeListener? = null
 
@@ -260,6 +263,10 @@ class ReactionViewGroup(
 
                 val reaction = getIntersectedIcon(event.rawX, event.rawY)?.reaction
                 val position = reaction?.let { config.reactions.indexOf(it) } ?: -1
+                if (position > -1) {
+                    selectedReaction?.selectedReaction(config.reactions.elementAt(position))
+//                    Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()
+                }
                 if (reactionSelectedListener?.invoke(position)?.not() == true) {
                     currentState = ReactionViewState.WaitingSelection
                 } else { // reactionSelectedListener == null or reactionSelectedListener() == true
@@ -397,6 +404,10 @@ class ReactionViewGroup(
                 })
             }
     }
+}
+
+interface OnReactionSelectedListener {
+    fun selectedReaction(reaction: Reaction)
 }
 
 private var ViewGroup.LayoutParams.size: Int

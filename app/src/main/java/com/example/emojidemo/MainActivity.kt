@@ -1,27 +1,26 @@
 package com.example.emojidemo
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.example.emojidemo.databinding.ActivityMainBinding
 import com.example.emojidemo.reactions.ReactionPopup
 import com.example.emojidemo.reactions.ReactionsConfigBuilder
-import android.view.MotionEvent
-
-import android.view.GestureDetector
-import android.view.GestureDetector.SimpleOnGestureListener
-import android.view.Gravity
-import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.example.emojidemo.reactions.OnReactionSelectedListener
 import com.example.emojidemo.reactions.Reaction
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity(), OnReactionSelectedListener {
 
     lateinit var mBinding: ActivityMainBinding
     private val strings = arrayOf("like", "love", "happy", "care", "shock", "sad", "angry")
     val reactionList = ArrayList<Reaction>()
+
+    companion object {
+        var like_status = false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +38,7 @@ class MainActivity : AppCompatActivity() {
             ReactionsConfigBuilder(this)
                 .withReactions(
                     reactionList
-                )
-                .withReactionTexts { position ->
-                    mBinding.btnReaction.setImageDrawable(reactionList[position].image)
-                    strings[position]
-                }
-                .build())
+                ).build())
 
 
         popup.reactionSelectedListener?.let {
@@ -52,5 +46,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         mBinding.btnReaction.setOnTouchListener(popup)
+    }
+
+    override fun selectedReaction(reaction: Reaction) {
+        like_status = true
+        mBinding.btnReaction.setImageDrawable(reaction.image)
+//        Toast.makeText(this, "reaction is ${reaction.reactionName}", Toast.LENGTH_SHORT).show()
     }
 }
