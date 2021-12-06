@@ -38,7 +38,8 @@ class MainActivity : Activity(), OnReactionSelectedListener {
             ReactionsConfigBuilder(this)
                 .withReactions(
                     reactionList
-                ).build())
+                ).build()
+        )
 
 
         popup.reactionSelectedListener?.let {
@@ -48,9 +49,18 @@ class MainActivity : Activity(), OnReactionSelectedListener {
         mBinding.btnReaction.setOnTouchListener(popup)
     }
 
-    override fun selectedReaction(reaction: Reaction) {
-        like_status = true
-        mBinding.btnReaction.setImageDrawable(reaction.image)
-//        Toast.makeText(this, "reaction is ${reaction.reactionName}", Toast.LENGTH_SHORT).show()
+    override fun selectedReaction(reaction: Reaction?, isLongPress: Boolean) {
+        like_status = if (isLongPress) {
+            mBinding.btnReaction.setImageDrawable(reaction?.image)
+            true
+        } else {
+            if (like_status) {
+                mBinding.btnReaction.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_disable_like_emoji))
+                false
+            } else {
+                mBinding.btnReaction.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_like_emoji))
+                true
+            }
+        }
     }
 }

@@ -264,7 +264,7 @@ class ReactionViewGroup(
                 val reaction = getIntersectedIcon(event.rawX, event.rawY)?.reaction
                 val position = reaction?.let { config.reactions.indexOf(it) } ?: -1
                 if (position > -1) {
-                    selectedReaction?.selectedReaction(config.reactions.elementAt(position))
+                    selectedReaction?.selectedReaction(config.reactions.elementAt(position), true)
 //                    Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()
                 }
                 if (reactionSelectedListener?.invoke(position)?.not() == true) {
@@ -407,7 +407,7 @@ class ReactionViewGroup(
 }
 
 interface OnReactionSelectedListener {
-    fun selectedReaction(reaction: Reaction)
+    fun selectedReaction(reaction: Reaction?, isLongPress: Boolean)
 }
 
 private var ViewGroup.LayoutParams.size: Int

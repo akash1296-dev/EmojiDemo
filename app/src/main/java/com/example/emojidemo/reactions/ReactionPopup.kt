@@ -116,6 +116,7 @@ class ReactionPopup @JvmOverloads constructor(
                     Toast.makeText(v.context, "long-click", Toast.LENGTH_SHORT).show()
                     return view.onTouchEvent(event)
                 } else {
+                    view.selectedReaction?.selectedReaction(null, false)
                     //click event has occurred
                     Toast.makeText(v.context, "single-click", Toast.LENGTH_SHORT).show()
                 }
@@ -123,7 +124,6 @@ class ReactionPopup @JvmOverloads constructor(
 
             MotionEvent.ACTION_DOWN -> {
                 startClickTime = Calendar.getInstance().timeInMillis
-
             }
         }
         return true
