@@ -15,8 +15,7 @@ import com.example.emojidemo.reactions.Reaction
 class MainActivity : Activity(), OnReactionSelectedListener {
 
     lateinit var mBinding: ActivityMainBinding
-    private val strings = arrayOf("like", "love", "happy", "care", "shock", "sad", "angry")
-    val reactionList = ArrayList<Reaction>()
+    private val reactionList = ArrayList<Reaction>()
 
     companion object {
         var like_status = false
@@ -25,6 +24,7 @@ class MainActivity : Activity(), OnReactionSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        //Modified as per requirement
         reactionList.add(Reaction(ContextCompat.getDrawable(this, R.drawable.ic_like_emoji)!!, "like"))
         reactionList.add(Reaction(ContextCompat.getDrawable(this, R.drawable.ic_love_emoji)!!, "love"))
         reactionList.add(Reaction(ContextCompat.getDrawable(this, R.drawable.ic_happy_emoji)!!, "happy"))
